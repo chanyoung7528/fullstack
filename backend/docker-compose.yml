@@ -3,13 +3,12 @@ services:
     image: postgres:latest
     container_name: fullstack-db
     ports:
-      - '5432:5432'
+      - '5433:5432'
     environment:
       POSTGRES_USER: prisma
       POSTGRES_PASSWORD: prismapass
       POSTGRES_DB: fullstack_db
     volumes:
       - fullstack_db:/var/lib/postgresql/data
-
 volumes:
   fullstack_db:
