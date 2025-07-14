@@ -3,6 +3,9 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { comparePasswords } from "./lib/password-utils";
+import * as jwt from "jsonwebtoken";
+import { JWT } from "next-auth/jwt";
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   useSecureCookies: process.env.NODE_ENV === "production",
   trustHost: true,
@@ -49,4 +52,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: {},
   callbacks: {},
+  jwt: {
+    encode: async ({ token, secret }) => {
+      return jwt.sign(token as jwt.JwtPayload, secret as string);
+    },
+    decode: async ({ token, secret }) => {
+      return jwt.verify(token as string, secret as string) as JWT;
+    },
+  },
 });
